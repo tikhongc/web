@@ -1,0 +1,76 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+	<meta charset="UTF-8"/>
+	<meta name="viewport" content="width=device-width, initial-scale=1"/>
+	<title>Cuery</title>
+	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BmbxuPwQa2lc/FVzBcNJ7UAyJxM6wuqIj61tLrc4wSX0szH/Ev+nYRRuWlolflfl" crossorigin="anonymous">
+	<style>
+		body {height: 100vh; line-height: 200%; background-color: #8cf;}
+		div {height: 100%; margin: 0 auto;} /* margin: 0 auto is for centering */
+		input {line-height: 100%;}
+		label {line-height: 100%;}
+		
+		button {border: 1px solid blue; border-radius: 0.5em; background-color: #def; transition: background 0.2s;}
+		button:hover {background-color: #8cf;}
+		button:active {background-color: #88f;}
+		
+		#redirectRegistration {color: blue; cursor: pointer;}
+	</style>
+</head>
+<body>
+	<div style="max-width: 600px;">
+		<div style="background-color: #eee; width: 90%; display: flex; align-items: center;">
+			<div style="max-height: 400px; padding: 5%;">
+				<h1 style="text-align: center;">Cuery</h1>
+				<br/>
+				<form id="loginForm" onsubmit="return clickButton()" action="" method="POST"> <!-- <form id="form" action="something" method="post"> -->
+					<table>
+						<tr>
+							<td> <label for="email">Email:&nbsp;</label> </td>
+							<td> <input type="email" id="email" name="email"/> </td>
+						</tr>
+						<tr>
+							<td> <label for="password">Password:&nbsp;</label> </td>
+							<td> <input type="password" id="password" name="password"/> </td>
+					</table>
+					<br/>
+					<button id="login" type="submit" style="min-width: 25%;">Login</button>
+					<span id="redirectRegistration" style="margin-left: 1em;" onclick="redirectRegistration();">New user?</span>
+				</form>
+			</div>
+		</div>
+	</div>
+	<script>
+                var url_string = window.location.href;
+                var url = new URL(url_string);
+                var loginError = "0";
+                loginError = url.searchParams.get("loginError");
+                if (loginError === "1"){
+                    alert("Login Error. (Account does not exist)");
+                    window.location.href = "login.html"; 
+                }
+                else if (loginError === "2"){
+                    alert("Login Error. (Incorrect password)");
+                    window.location.href = "login.html"; 
+                }
+                
+                function redirectRegistration(){
+                    window.location.href = "registration.html";
+                }
+                
+                function clickButton() {
+                    let email = document.getElementById("email");
+                    let password = document.getElementById("password");
+                    if (email.value.length === 0 || password.value.length === 0){
+                        alert("Please fill in all the information.");
+                        return false;
+                    }
+                    else{   
+                       document.getElementById("loginForm").action = "login";
+                       return true;
+                    }
+                }
+	</script>
+</body>
+</html>

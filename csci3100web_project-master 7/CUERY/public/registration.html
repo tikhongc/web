@@ -1,0 +1,109 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+	<meta charset="UTF-8"/>
+	<meta name="viewport" content="width=device-width, initial-scale=1"/>
+	<title>Cuery</title>
+	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BmbxuPwQa2lc/FVzBcNJ7UAyJxM6wuqIj61tLrc4wSX0szH/Ev+nYRRuWlolflfl" crossorigin="anonymous">
+	<style>
+		body {height: 100vh; line-height: 200%;}
+		div {height: 100%; margin: 0 auto;} /* margin: 0 auto is for centering */
+		input {line-height: 100%;}
+		label {line-height: 100%;}
+		
+		button {border: 1px solid blue; border-radius: 0.5em; background-color: #def; transition: background 0.2s;}
+		button:hover {background-color: #8cf;}
+		button:active {background-color: #88f;}
+		
+		#redirectLogin {color: blue; cursor: pointer;}                
+	</style>
+	<script>
+		// temporary
+                var url_string = window.location.href;
+                var url = new URL(url_string);
+                var invalid = "0";
+                invalid = url.searchParams.get("invalid");
+                if (invalid === "1"){
+                    alert("Registration error. (Please use another Username)");
+                    window.location.href = "registration.html";    
+                }
+                else if (invalid === "2"){
+                    alert("Registration error. (Invalid email)");
+                    window.location.href = "registration.html";  
+                }
+		
+                function redirectLogin(){
+                    window.location.href = "login.html";
+                }
+                
+                function clickButton() {
+                    let newEmail = document.getElementById("newEmail");
+                    let username = document.getElementById("username");
+                    let pw1 = document.getElementById("newPassword");
+                    let pw2 = document.getElementById("newPassword2");
+                    if (newEmail.value.length === 0 || username.value.length === 0 || pw1.value.length === 0 || pw2.value.length === 0){
+                        alert("Please fill in all the information.");
+                        return false;
+                    }
+                    else if (pw1.value.length < 8 || pw1.value.length > 18){
+                        alert("Password must contain 8-18 characters.");
+                        return false;
+                    }
+                    else if (pw1.value !== pw2.value){
+                        alert("Password and Confirm Password must be the same.");
+                        return false;
+                    }
+                    else{
+                        document.getElementById("registration").action = "user_create";
+                        return true;
+                    }
+                }
+	</script>
+</head>
+<body style="background-color: #8cf;">
+	<div style="max-width: 600px;">
+		<div style="background-color: #eee; width: 90%; display: flex; align-items: center;">
+			<div style="max-height: 400px; padding: 5%;">
+				<h1 style="text-align: center;">Cuery</h1>
+				<br/>
+				<form id="registration" onsubmit="return clickButton();" action="" method="POST"> <!-- <form id="form" action="something" method="post"> -->
+					<table>
+						<tr>
+							<td> <label for="newEmail">Email:&nbsp;</label> </td>
+							<td> <input type="email" id="newEmail" name="newEmail"/> </td>
+						</tr>
+						<tr>
+							<td> <label for="username">Username:&nbsp;</label> </td>
+                                                        <td> <input type="text" id="username" placeholder="[3-10 characters]" name="username"/> </td>
+						</tr>
+						<tr>
+							<td> <label for="newPassword">Password:&nbsp;</label> </td>
+                                                        <td> <input type="password" id="newPassword" placeholder="[>= 8 characters]" name="newPassword"/> </td>
+						</tr>
+						<tr>
+							<td> <label for="password2">Confirm<br/>Password:&nbsp;</label> </td>
+							<td> <input type="password" id="newPassword2" name="newPassword2"/> </td>
+						</tr>
+                                                <tr>
+							<td> <label for="year">Year:&nbsp;</label> </td>
+							<td> 
+                                                            <select id="year" name="year">
+                                                                <option value=1>1</option>
+                                                                <option value=2>2</option>
+                                                                <option value=3>3</option>
+                                                                <option value=4>4</option>
+                                                                <option value=5>5</option>
+                                                                <option value=6>6</option>
+                                                            </select>
+                                                        </td>
+						</tr>
+					</table>
+					<br/>
+					<button id="register" type="submit" style="min-width: 25%;">Register</button>
+					<span id="redirectLogin" style="margin-left: 1em;" onclick="redirectLogin();">Existing User?</span>
+				</form>
+			</div>
+		</div>
+	</div>
+</body>
+</html>

@@ -1,0 +1,89 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+	<meta charset="UTF-8"/>
+	<meta name="viewport" content="width=device-width, initial-scale=1"/>
+	<title>Cuery</title>
+	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BmbxuPwQa2lc/FVzBcNJ7UAyJxM6wuqIj61tLrc4wSX0szH/Ev+nYRRuWlolflfl" crossorigin="anonymous">
+	<style>
+		body {line-height: 200%; background-color: #8cf; overflow-x: hidden;}
+		div {height: 100%; margin: 0 auto;} /* margin: 0 auto is for centering */
+		p {display: inline-block; margin: 0.2em;}
+		
+		button {border: 1px solid blue; border-radius: 0.5em; background-color: #def; transition: background 0.2s;}
+		button:hover {background-color: #8cf;}
+		button:active {background-color: #88f;}
+		
+		.avatar {position: absolute; top: 0.5em; right: 0.5em; height: 2.5rem; width: 2.5rem; cursor: pointer; z-index: 1000;}
+		.sidebar { background-color: #fff; position: absolute; top: 0px; right: 0px; min-height: 100vh; white-space: nowrap; z-index: 999; transition: width 1s; width: 0px;}
+		.sidebar-visible { width: 200px;}
+		
+		#posts {background-color: #cef; padding: 0.2em 0;}
+		#posts>div {background-color: #adf; line-height: 100%; margin: 0.3em 0.5em; cursor: pointer;}
+	</style>
+</head>
+<body>
+	<div style="line-height: 100%; padding: 0.5em;">
+		<h1 class="d-inline-block mx-2">Cuery</h1>
+		<img src="whatever-because-we-don't-have-a-logo.jpg" alt="Cuery Logo"/>
+		<img src="avatar.jpg" class="avatar" onclick="document.getElementById('sidebar').classList.toggle('sidebar-visible');"/>
+	</div>
+	<hr style="margin: 0;"/>
+	<div style="padding: 0.5em;">
+		<div style="margin-bottom: 0.5em;">
+			Forum -> subforum -> sort by <select id="sort">
+				<option value="timeDsc" selected>Time, descending</option>
+				<option value="timeAsc" selected>Time, ascending</option>
+				<option value="voteDsc" selected>Votes, descending</option>
+				<option value="voteAsc" selected>Votes, ascending</option>
+				<option value="contDsc" selected>Controversy, descending</option>
+				<option value="contAsc" selected>Controversy, ascending</option>
+			</select>
+			<button style="float: right;" onclick="window.location='/newpost.html';">Add new post</button>
+		</div>
+		<div id="posts"></div>
+	</div>
+	<div id="sidebar" class="sidebar">
+		Something here<br/>
+		Profile things probably
+	</div>
+	<script>
+		function addPost(data) { // data is an object
+			var post=document.createElement("div");
+			var p=document.createElement("p");
+			var obj=document.createElement("div");
+			p.innerHTML=data.upvotes-data.downvotes;
+			p.style.fontSize="200%";
+			post.appendChild(p);
+			p=document.createElement("p");
+			obj.innerHTML=data.title;
+			p.appendChild(obj);
+			obj=document.createElement("div");
+			obj.classList.add("text-secondary");
+			obj.innerHTML=data.owner;
+			p.appendChild(obj);
+			post.appendChild(p);
+			document.getElementById("posts").appendChild(post);
+			// can add more information
+		}
+		// test function
+		addPost({title:"foo",owner:"bar",upvotes:123,downvotes:24});
+	
+		// add posts if reaching bottom
+		// DOESN'T work if page isn't long enough
+		// Can shift to manual page-changing if it turns out to be a poor feature
+		window.addEventListener("scroll",function(e){
+			const scroll = (window.scrollY/(document.body.clientHeight-window.innerHeight));
+			console.log(scroll);
+			if(scroll>0.9){ // threshold: 90% scroll
+				console.log("threshold-reached");
+				// do something
+			}
+		});
+		
+		fetch("/posts",{method:"GET"})
+		.then(res=>res.json())
+		.then(data=>console.log(data)); // idk, log it first
+	</script>
+</body>
+</html>

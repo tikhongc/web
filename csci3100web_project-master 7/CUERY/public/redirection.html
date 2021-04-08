@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <script>
+            var second = 6
+            function showSeconds(){
+                second -= 1; 
+                document.getElementById("sentence").innerText = "You will be automatically redirected to the login page in "+second+" second ...";
+            }
+            setInterval(showSeconds, 1000);
+            function redirection(){
+                window.location.href = "login.html";
+            }
+            setTimeout('redirection()', 6000);
+        </script>
+    </head>
+    <body>
+        <h1>Registration Success</h1>
+        <div>Please check your email for the confirmation email.</div>
+        <br/>
+        <hr/>
+        <div id="sentence"></div>
+    </body>
+</html>
